@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "ludost-blog-frontend",
-  "buildCommand": "cd apps/frontend && pnpm run build",
+  "buildCommand": "pnpm run build --filter=@ludost/frontend",
   "outputDirectory": "apps/frontend/dist",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "vite",
@@ -18,23 +18,6 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
         }
       ]
     }
