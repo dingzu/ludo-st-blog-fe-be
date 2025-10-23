@@ -1,0 +1,48 @@
+name: Database Migration
+
+on:
+  push:
+    paths:
+      - 'packages/database/**'
+    branches: [ main, develop ]
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: |
+          cd packages/database
+          npm install
+          
+      - name: Run migrations (Staging)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          cd packages/database
+          npm run migrate:production
+        env:
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+          
+      - name: Run migrations (Production)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd packages/database
+          npm run migrate:production
+        env:
+          DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          
+      - name: Seed data (Staging)
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          cd packages/database
+          npm run seed:production
+        env:
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}

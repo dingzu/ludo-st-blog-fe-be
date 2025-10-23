@@ -1,0 +1,41 @@
+{
+  "name": "ludost-web",
+  "version": "1.0.0",
+  "description": "A modern blog website with Vue3 frontend and Node.js backend",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "clean": "turbo run clean",
+    "db:migrate": "cd packages/database && npm run migrate",
+    "db:migrate:prod": "cd packages/database && npm run migrate:production",
+    "db:seed": "cd packages/database && npm run seed",
+    "db:seed:prod": "cd packages/database && npm run seed:production",
+    "db:reset": "cd packages/database && npm run reset",
+    "deploy:staging": "scripts/deploy.sh staging",
+    "deploy:production": "scripts/deploy.sh production",
+    "format": "prettier --write \"**/*.{js,ts,vue,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,vue,json,md}\""
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "prettier": "^3.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.10.0"
+}
