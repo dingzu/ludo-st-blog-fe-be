@@ -1,28 +1,42 @@
 {
   "version": 2,
   "name": "ludost-blog-frontend",
-  "builds": [
+  "buildCommand": "cd apps/frontend && pnpm run build",
+  "outputDirectory": "apps/frontend/dist",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": "vite",
+  "rewrites": [
     {
-      "src": "apps/frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
-  "routes": [
+  "headers": [
     {
-      "src": "/(.*)",
-      "dest": "/apps/frontend/dist/$1"
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
-  ],
-  "functions": {
-    "apps/frontend/dist/**": {
-      "maxDuration": 10
-    }
-  },
-  "env": {
-    "VITE_API_URL": "@vite_api_url",
-    "VITE_UPLOAD_URL": "@vite_upload_url"
-  }
+  ]
 }

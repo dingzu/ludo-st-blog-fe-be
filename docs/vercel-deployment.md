@@ -6,9 +6,20 @@
 - **Project Name**: `ludost-blog-frontend`
 - **Framework Preset**: `Vite`
 - **Root Directory**: `apps/frontend`
-- **Build Command**: `pnpm run build`
-- **Output Directory**: `dist`
-- **Install Command**: `pnpm install`
+- **Build Command**: `cd apps/frontend && pnpm run build`
+- **Output Directory**: `apps/frontend/dist`
+- **Install Command**: `pnpm install --frozen-lockfile`
+
+**注意**: 由于项目是Monorepo结构，需要在Vercel项目设置中指定正确的根目录和构建命令。
+
+### 1.1 vercel.json配置文件
+
+项目根目录的`vercel.json`文件已经配置好了，包含：
+- 正确的构建命令和输出目录
+- SPA路由重写规则
+- 静态资源缓存配置
+
+**重要**: 不要同时使用`builds`和`functions`属性，这会导致配置冲突。
 
 ### 2. 环境变量配置
 
