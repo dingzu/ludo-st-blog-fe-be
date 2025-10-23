@@ -1,10 +1,12 @@
-name: CI/CD Pipeline
+name: Deploy Frontend
 
 on:
   push:
     branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      - 'apps/frontend/**'
+      - 'packages/shared/**'
+  workflow_dispatch:
 
 env:
   NODE_VERSION: '18'
@@ -44,17 +46,23 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         
-      - name: Lint code
-        run: pnpm run lint
+      - name: Lint frontend code
+        run: |
+          cd apps/frontend
+          pnpm run lint
         
-      - name: Type check
-        run: pnpm run type-check
+      - name: Type check frontend
+        run: |
+          cd apps/frontend
+          pnpm run type-check
         
-      - name: Run tests
-        run: pnpm run test
+      - name: Run frontend tests
+        run: |
+          cd apps/frontend
+          pnpm run test
 
-  # 构建项目
-  build:
+  # 构建前端
+  build-frontend:
     needs: lint-and-test
     runs-on: ubuntu-latest
     steps:
@@ -74,22 +82,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         
-      - name: Build all packages
-        run: pnpm run build
+      - name: Build frontend
+        run: |
+          cd apps/frontend
+          pnpm run build
         
-      - name: Upload build artifacts
+      - name: Upload frontend build artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: build-artifacts
-          path: |
-            apps/frontend/dist
-            apps/backend/dist
-            packages/shared/dist
+          name: frontend-build
+          path: apps/frontend/dist
           retention-days: 7
 
   # 部署到测试环境
   deploy-staging:
-    needs: build
+    needs: build-frontend
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     environment: staging
@@ -97,34 +104,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-          
-      - name: Download build artifacts
+      - name: Download frontend build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts
-          
-      - name: Deploy Database (Staging)
-        run: |
-          cd packages/database
-          npm install
-          npm run migrate:production
-        env:
-          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
-          
-      - name: Deploy Backend to Railway (Staging)
-        uses: railway-app/railway-deploy@v1
-        with:
-          service: backend-staging
-          token: ${{ secrets.RAILWAY_TOKEN }}
+          name: frontend-build
           
       - name: Deploy Frontend to Vercel (Staging)
         uses: amondnet/vercel-action@v25
@@ -133,10 +116,11 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_STAGING }}
           working-directory: ./apps/frontend
+          vercel-args: '--confirm'
 
   # 部署到生产环境
   deploy-production:
-    needs: build
+    needs: build-frontend
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
@@ -144,29 +128,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Download build artifacts
+      - name: Download frontend build artifacts
         uses: actions/download-artifact@v3
         with:
-          name: build-artifacts
+          name: frontend-build
           
-      - name: Deploy Database
-        run: |
-          cd packages/database
-          npm run migrate:production
-        env:
-          DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
-          
-      - name: Deploy Backend to Railway
-        uses: railway-app/railway-deploy@v1
-        with:
-          service: backend
-          token: ${{ secrets.RAILWAY_TOKEN }}
-          
-      - name: Deploy Frontend to Vercel
+      - name: Deploy Frontend to Vercel (Production)
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: ./apps/frontend
-          vercel-args: '--prod'
+          vercel-args: '--prod --confirm'
