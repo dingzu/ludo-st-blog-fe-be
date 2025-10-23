@@ -15,11 +15,16 @@
 ### 1.1 vercel.json配置文件
 
 项目根目录的`vercel.json`文件已经配置好了，包含：
-- 正确的构建命令和输出目录
+- 使用分号分隔的命令：`cd apps/frontend; pnpm run build`
+- 正确的输出目录：`apps/frontend/dist`
 - SPA路由重写规则
 - 静态资源缓存配置
 
-**重要**: 不要同时使用`builds`和`functions`属性，这会导致配置冲突。
+**重要**: 
+- 不要同时使用`builds`和`functions`属性，这会导致配置冲突
+- 使用分号分隔符确保命令在Windows环境下正确执行
+- 先切换到前端目录再执行构建，避免Monorepo构建问题
+- 已修复后端TypeScript类型注解问题，确保构建成功
 
 ### 2. 环境变量配置
 

@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Express } from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
@@ -22,7 +22,7 @@ import { connectDB } from './config/database.js'
 // 加载环境变量
 dotenv.config()
 
-const app = express()
+const app: Express = express()
 const PORT = process.env.PORT || 3001
 
 // 连接数据库
