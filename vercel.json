@@ -1,9 +1,9 @@
 {
   "version": 2,
   "name": "ludost-blog-frontend",
-  "buildCommand": "cd apps/frontend; pnpm run build",
-  "outputDirectory": "apps/frontend/dist",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "framework": "vite",
   "rewrites": [
     {

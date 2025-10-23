@@ -6,24 +6,25 @@
 - **Project Name**: `ludost-blog-frontend`
 - **Framework Preset**: `Vite`
 - **Root Directory**: `apps/frontend`
-- **Build Command**: `cd apps/frontend && pnpm run build`
-- **Output Directory**: `apps/frontend/dist`
-- **Install Command**: `pnpm install --frozen-lockfile`
+- **Build Command**: `pnpm run build`
+- **Output Directory**: `dist`
+- **Install Command**: `cd ../.. && pnpm install --frozen-lockfile`
 
-**注意**: 由于项目是Monorepo结构，需要在Vercel项目设置中指定正确的根目录和构建命令。
+**注意**: 由于项目是Monorepo结构，Root Directory设置为`apps/frontend`，但安装命令需要回到根目录安装依赖。
 
 ### 1.1 vercel.json配置文件
 
 项目根目录的`vercel.json`文件已经配置好了，包含：
-- 使用分号分隔的命令：`cd apps/frontend; pnpm run build`
-- 正确的输出目录：`apps/frontend/dist`
+- 构建命令：`pnpm run build`（在apps/frontend目录中执行）
+- 输出目录：`dist`（相对于apps/frontend目录）
+- 安装命令：`cd ../.. && pnpm install --frozen-lockfile`（回到根目录安装依赖）
 - SPA路由重写规则
 - 静态资源缓存配置
 
 **重要**: 
-- 不要同时使用`builds`和`functions`属性，这会导致配置冲突
-- 使用分号分隔符确保命令在Windows环境下正确执行
-- 先切换到前端目录再执行构建，避免Monorepo构建问题
+- Root Directory设置为`apps/frontend`
+- 安装命令需要回到根目录以访问pnpm workspace
+- 构建命令在前端目录中直接执行
 - 已修复后端TypeScript类型注解问题，确保构建成功
 
 ### 2. 环境变量配置
