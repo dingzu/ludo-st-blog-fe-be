@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { testApiConnection } from '@/api'
 
 const backendStatus = ref(false)
 const apiResponse = ref(null)
@@ -63,14 +64,10 @@ const testAPI = async () => {
   apiResponse.value = null
   
   try {
-    const response = await fetch('http://localhost:3001/api')
-    if (response.ok) {
-      const data = await response.json()
-      apiResponse.value = data
-      backendStatus.value = true
-    } else {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-    }
+    // 使用API服务测试连接
+    const data = await testApiConnection()
+    apiResponse.value = data
+    backendStatus.value = true
   } catch (err) {
     error.value = err instanceof Error ? err.message : '未知错误'
     backendStatus.value = false
