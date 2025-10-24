@@ -18,6 +18,19 @@
 
     <div class="api-test-section">
       <h2>API 测试</h2>
+      
+      <div class="config-info">
+        <h3>当前配置:</h3>
+        <div class="config-item">
+          <span class="label">API基础URL:</span>
+          <span class="value">{{ apiBaseUrl }}</span>
+        </div>
+        <div class="config-item">
+          <span class="label">完整API URL:</span>
+          <span class="value">{{ fullApiUrl }}</span>
+        </div>
+      </div>
+      
       <button @click="testAPI" :disabled="loading" class="test-btn">
         {{ loading ? '测试中...' : '测试后端API' }}
       </button>
@@ -50,13 +63,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { testApiConnection } from '@/api'
+import { ref, onMounted, computed } from 'vue'
+import { testApiConnection, API_CONFIG, getApiUrl } from '@/api'
 
 const backendStatus = ref(false)
 const apiResponse = ref(null)
 const error = ref('')
 const loading = ref(false)
+
+// 计算属性显示当前配置
+const apiBaseUrl = computed(() => API_CONFIG.BASE_URL)
+const fullApiUrl = computed(() => getApiUrl(API_CONFIG.ENDPOINTS.API))
 
 const testAPI = async () => {
   loading.value = true
@@ -108,6 +125,40 @@ h2 {
   margin: 20px 0;
   border-radius: 8px;
   border-left: 4px solid #3498db;
+}
+
+.config-info {
+  background: #e8f4fd;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #3498db;
+}
+
+.config-info h3 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.config-item {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.config-item .label {
+  font-weight: 600;
+  margin-right: 10px;
+  min-width: 120px;
+}
+
+.config-item .value {
+  font-family: 'Courier New', monospace;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  word-break: break-all;
 }
 
 .status-item {

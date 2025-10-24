@@ -18,7 +18,19 @@ export const API_CONFIG = {
 
 // 创建完整的API URL
 export const getApiUrl = (endpoint: string) => {
-  return `${API_CONFIG.BASE_URL}${endpoint}`
+  // 确保BASE_URL是完整的URL（包含协议）
+  const baseUrl = API_CONFIG.BASE_URL
+  
+  // 如果endpoint已经包含完整URL，直接返回
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    return endpoint
+  }
+  
+  // 确保baseUrl以/结尾，endpoint以/开头
+  const cleanBaseUrl = baseUrl.replace(/\/$/, '')
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+  
+  return `${cleanBaseUrl}${cleanEndpoint}`
 }
 
 // 导出配置（默认导出）

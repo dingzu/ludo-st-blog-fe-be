@@ -1,6 +1,9 @@
 // API服务文件
 import { getApiUrl, API_CONFIG } from './config'
 
+// 导出配置和工具函数
+export { getApiUrl, API_CONFIG }
+
 // 通用API请求函数
 export const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
   const url = getApiUrl(endpoint)
