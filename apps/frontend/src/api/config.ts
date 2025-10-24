@@ -1,8 +1,8 @@
 // API配置文件
-const API_CONFIG = {
+export const API_CONFIG = {
   // 从环境变量获取API基础URL，如果没有则使用默认值
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
-  UPLOAD_URL: import.meta.env.VITE_UPLOAD_URL || 'http://localhost:3001/api/upload',
+  BASE_URL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001',
+  UPLOAD_URL: (import.meta as any).env?.VITE_UPLOAD_URL || 'http://localhost:3001/api/upload',
   
   // API端点
   ENDPOINTS: {
@@ -21,5 +21,5 @@ export const getApiUrl = (endpoint: string) => {
   return `${API_CONFIG.BASE_URL}${endpoint}`
 }
 
-// 导出配置
+// 导出配置（默认导出）
 export default API_CONFIG
