@@ -35,14 +35,14 @@
 ```
 VITE_API_URL=https://your-production-backend.railway.app
 VITE_UPLOAD_URL=https://your-production-backend.railway.app/api/upload
-NODE_ENV=production
 ```
+
+**重要**: 不要设置 `NODE_ENV=production`，这会导致 devDependencies 被跳过安装，从而引发 `vue-tsc: command not found` 错误。
 
 #### 测试环境变量（如果创建staging项目）
 ```
 VITE_API_URL=https://your-staging-backend.railway.app
 VITE_UPLOAD_URL=https://your-staging-backend.railway.app/api/upload
-NODE_ENV=staging
 ```
 
 ### 3. 构建设置
@@ -61,6 +61,11 @@ pnpm install --frozen-lockfile
 ```
 apps/frontend/dist
 ```
+
+**注意**: 
+- Root Directory 设置为项目根目录（不是 apps/frontend）
+- 安装命令在根目录执行，确保 monorepo 依赖正确安装
+- 构建命令切换到前端目录执行
 
 ### 4. 部署分支设置
 
