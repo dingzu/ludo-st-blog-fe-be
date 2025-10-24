@@ -152,11 +152,27 @@ vercel --target production
 2. 本地运行 `pnpm install` 重新生成 lockfile
 3. 提交更新后的 pnpm-lock.yaml 文件
 
-#### 4. 路由问题
+#### 4. vite 命令找不到错误
+**错误信息**: `sh: line 1: vite: command not found`
+
+**原因**: 设置了 `NODE_ENV=production` 导致 devDependencies 中的 vite 被跳过安装
+
+**解决方案**:
+1. 将 `vite` 从 devDependencies 移到 dependencies：
+   ```json
+   "dependencies": {
+     "vite": "^4.4.0",
+     "vue-tsc": "^1.8.0"
+   }
+   ```
+2. 本地运行 `pnpm install` 重新生成 lockfile
+3. 提交更新后的文件
+
+#### 5. 路由问题
 - 配置重写规则处理SPA路由
 - 检查Vue Router配置
 
-#### 5. API连接问题
+#### 6. API连接问题
 - 确认后端API地址正确
 - 检查CORS配置
 - 验证SSL证书
