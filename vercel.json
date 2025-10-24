@@ -3,7 +3,7 @@
   "name": "ludost-blog-frontend",
   "buildCommand": "pnpm run build:prod",
   "outputDirectory": "dist",
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile",
   "framework": "vite",
   "rewrites": [
     {

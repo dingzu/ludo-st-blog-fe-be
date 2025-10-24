@@ -139,11 +139,24 @@ vercel --target production
 - 检查变量值是否正确
 - 重新部署以应用新变量
 
-#### 3. 路由问题
+#### 3. pnpm-lock.yaml 不同步错误
+**错误信息**: `ERR_PNPM_OUTDATED_LOCKFILE Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date`
+
+**原因**: package.json 中的依赖与 pnpm-lock.yaml 不同步
+
+**解决方案**:
+1. 在 `vercel.json` 中使用 `--no-frozen-lockfile` 参数：
+   ```json
+   "installCommand": "cd ../.. && pnpm install --no-frozen-lockfile"
+   ```
+2. 本地运行 `pnpm install` 重新生成 lockfile
+3. 提交更新后的 pnpm-lock.yaml 文件
+
+#### 4. 路由问题
 - 配置重写规则处理SPA路由
 - 检查Vue Router配置
 
-#### 4. API连接问题
+#### 5. API连接问题
 - 确认后端API地址正确
 - 检查CORS配置
 - 验证SSL证书
