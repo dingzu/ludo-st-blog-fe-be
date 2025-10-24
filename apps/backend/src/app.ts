@@ -32,9 +32,17 @@ connectDB()
 app.use(helmet())
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] 
-    : ['http://localhost:3000'],
-  credentials: true
+    ? [
+        'https://ludo-st-blog-fe-be-frontend.vercel.app',
+        'https://ludost-blog-frontend.vercel.app'
+      ] 
+    : [
+        'http://localhost:3000',
+        'http://127.0.0.1:3000'
+      ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }))
 
 // 限流中间件
