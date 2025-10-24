@@ -168,11 +168,70 @@ vercel --target production
 2. 本地运行 `pnpm install` 重新生成 lockfile
 3. 提交更新后的文件
 
-#### 5. 路由问题
+#### 5. Vite 插件找不到错误
+**错误信息**: `Cannot find package '@vitejs/plugin-vue' imported from vite.config.ts`
+
+**原因**: vite.config.ts 需要的插件在 devDependencies 中，生产环境被跳过安装
+
+**解决方案**:
+1. 将构建所需的依赖移到 dependencies：
+   ```json
+   "dependencies": {
+     "vite": "^4.4.0",
+     "@vitejs/plugin-vue": "^4.3.0",
+     "typescript": "~5.1.0",
+     "sass": "^1.64.0",
+     "vue-tsc": "^1.8.0",
+     "@vue/tsconfig": "^0.4.0"
+   }
+   ```
+2. 本地运行 `pnpm install` 重新生成 lockfile
+3. 提交更新后的文件
+
+#### 6. 综合解决方案（推荐）
+为了避免多个依赖问题，建议将所有构建相关的依赖都移到 dependencies：
+
+**完整的 dependencies 配置**:
+```json
+"dependencies": {
+  "vue": "^3.3.0",
+  "vue-router": "^4.2.0",
+  "pinia": "^2.1.0",
+  "axios": "^1.5.0",
+  "element-plus": "^2.3.0",
+  "@element-plus/icons-vue": "^2.1.0",
+  "@toast-ui/editor": "^3.2.0",
+  "@toast-ui/vue-editor": "^3.2.0",
+  "marked": "^9.1.0",
+  "highlight.js": "^11.8.0",
+  "dayjs": "^1.11.0",
+  "vue-tsc": "^1.8.0",
+  "vite": "^4.4.0",
+  "@vitejs/plugin-vue": "^4.3.0",
+  "typescript": "~5.1.0",
+  "sass": "^1.64.0",
+  "@vue/tsconfig": "^0.4.0"
+}
+```
+
+**保留在 devDependencies 的依赖**:
+```json
+"devDependencies": {
+  "vitest": "^0.34.0",
+  "@vue/test-utils": "^2.4.0",
+  "jsdom": "^22.1.0",
+  "eslint": "^8.45.0",
+  "eslint-plugin-vue": "^9.15.0",
+  "@typescript-eslint/eslint-plugin": "^6.0.0",
+  "@typescript-eslint/parser": "^6.0.0"
+}
+```
+
+#### 7. 路由问题
 - 配置重写规则处理SPA路由
 - 检查Vue Router配置
 
-#### 6. API连接问题
+#### 8. API连接问题
 - 确认后端API地址正确
 - 检查CORS配置
 - 验证SSL证书
