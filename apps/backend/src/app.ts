@@ -39,6 +39,9 @@ app.use(cors({
     
     // 允许的域名列表
     const allowedOrigins = [
+      // 自定义域名
+      'https://blog.ludost.cn',
+      'https://ludost.cn',
       // Vercel 生产域名
       'https://ludo-st-blog-fe-be-frontend.vercel.app',
       'https://ludost-blog-frontend.vercel.app',
@@ -53,9 +56,11 @@ app.use(cors({
       'http://127.0.0.1:3003'
     ]
     
-    // 如果是生产环境，允许所有 .vercel.app 子域名
-    if (process.env.NODE_ENV === 'production' && origin.includes('.vercel.app')) {
-      return callback(null, true)
+    // 如果是生产环境，允许所有 .vercel.app 和 .ludost.cn 子域名
+    if (process.env.NODE_ENV === 'production') {
+      if (origin.includes('.vercel.app') || origin.includes('.ludost.cn')) {
+        return callback(null, true)
+      }
     }
     
     // 检查是否在允许列表中

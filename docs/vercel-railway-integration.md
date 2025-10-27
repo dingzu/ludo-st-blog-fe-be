@@ -12,8 +12,9 @@
 ### 1. Railway 后端配置
 
 #### 域名信息
-- **公开域名（Public Domain）**：`ludostbackend-production.up.railway.app`
-- **私有域名（Private Domain）**：`ludostbackend.railway.internal`
+- **后端公开域名（Public Domain）**：`ludostbackend-production.up.railway.app`
+- **后端私有域名（Private Domain）**：`ludostbackend.railway.internal`
+- **前端自定义域名**：`blog.ludost.cn`、`ludost.cn`
 
 #### 在 Railway 中配置环境变量
 
@@ -71,7 +72,8 @@ SMTP_PASS=your-app-password
 - 开发环境使用本地后端
 
 #### 后端 (`apps/backend/src/app.ts`)
-- CORS 配置允许所有 `.vercel.app` 域名
+- CORS 配置允许所有 `.vercel.app` 和 `.ludost.cn` 域名
+- 已添加 `blog.ludost.cn` 和 `ludost.cn` 到允许列表
 - 开发环境允许 `localhost` 访问
 - 支持跨域凭证传递
 

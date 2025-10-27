@@ -10,7 +10,8 @@ const getBaseUrl = () => {
   const isProduction = (import.meta as any).env?.MODE === 'production' || 
                        (import.meta as any).env?.PROD === true ||
                        window.location.href.includes('vercel.app') ||
-                       window.location.href.includes('railway.app')
+                       window.location.href.includes('railway.app') ||
+                       window.location.href.includes('ludost.cn')
   
   if (isProduction) {
     // 生产环境使用Railway公开域名
