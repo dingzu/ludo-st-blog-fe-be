@@ -31,24 +31,44 @@ connectDB()
 // 安全中间件
 app.use(helmet())
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://ludo-st-blog-fe-be-frontend.vercel.app',
-        'https://ludost-blog-frontend.vercel.app'
-      ] 
-    : [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'http://localhost:3002',
-        'http://localhost:3003',
-        'http://127.0.0.1:3000',
-        'http://127.0.0.1:3001',
-        'http://127.0.0.1:3002',
-        'http://127.0.0.1:3003'
-      ],
+  origin: (origin, callback) => {
+    // 允许没有origin的请求（如移动应用、Postman）
+    if (!origin) {
+      return callback(null, true)
+    }
+    
+    // 允许的域名列表
+    const allowedOrigins = [
+      // Vercel 生产域名
+      'https://ludo-st-blog-fe-be-frontend.vercel.app',
+      'https://ludost-blog-frontend.vercel.app',
+      // 开发环境
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://localhost:3003',
+      'http://127.0.0.1:3000',
+      'http://127.0.0.1:3001',
+      'http://127.0.0.1:3002',
+      'http://127.0.0.1:3003'
+    ]
+    
+    // 如果是生产环境，允许所有 .vercel.app 子域名
+    if (process.env.NODE_ENV === 'production' && origin.includes('.vercel.app')) {
+      return callback(null, true)
+    }
+    
+    // 检查是否在允许列表中
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('CORS策略不允许该来源'))
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
+  exposedHeaders: ['Content-Range', 'X-Total-Count']
 }))
 
 // 限流中间件

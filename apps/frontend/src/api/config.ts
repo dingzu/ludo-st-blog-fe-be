@@ -1,8 +1,30 @@
 // API配置文件
+// 根据环境自动选择API基础URL
+const getBaseUrl = () => {
+  // 优先使用环境变量
+  if ((import.meta as any).env?.VITE_API_URL) {
+    return (import.meta as any).env.VITE_API_URL
+  }
+  
+  // 判断是否为生产环境
+  const isProduction = (import.meta as any).env?.MODE === 'production' || 
+                       (import.meta as any).env?.PROD === true ||
+                       window.location.href.includes('vercel.app') ||
+                       window.location.href.includes('railway.app')
+  
+  if (isProduction) {
+    // 生产环境使用Railway公开域名
+    return 'https://ludostbackend-production.up.railway.app'
+  }
+  
+  // 开发环境使用本地后端
+  return 'http://localhost:3001'
+}
+
 export const API_CONFIG = {
-  // 从环境变量获取API基础URL，如果没有则使用默认值
-  BASE_URL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001',
-  UPLOAD_URL: (import.meta as any).env?.VITE_UPLOAD_URL || 'http://localhost:3001/api/upload',
+  // 获取API基础URL
+  BASE_URL: getBaseUrl(),
+  UPLOAD_URL: (import.meta as any).env?.VITE_UPLOAD_URL || `${getBaseUrl()}/api/upload`,
   
   // API端点
   ENDPOINTS: {
@@ -32,6 +54,9 @@ export const getApiUrl = (endpoint: string) => {
   
   return `${cleanBaseUrl}${cleanEndpoint}`
 }
+
+// 调试：输出当前使用的API基础URL
+console.log('🌐 API Base URL:', API_CONFIG.BASE_URL)
 
 // 导出配置（默认导出）
 export default API_CONFIG
