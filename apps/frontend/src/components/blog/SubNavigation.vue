@@ -41,11 +41,12 @@ defineEmits<{
   .sub-nav-title {
     font-size: 14px;
     font-weight: 600;
-    color: #757575;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 0 20px;
     margin-bottom: 15px;
+    transition: color 0.3s ease;
   }
   
   .sub-nav-list {
@@ -61,16 +62,18 @@ defineEmits<{
       gap: 10px;
       transition: all 0.2s ease;
       border-left: 3px solid transparent;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
       
       &:hover {
-        background: #f0f0f0;
-        border-left-color: #bdbdbd;
+        background: var(--bg-hover);
+        border-left-color: var(--border-color);
       }
       
       &.active {
-        background: #e3f2fd;
-        border-left-color: #42a5f5;
-        color: #1976d2;
+        background: var(--bg-hover);
+        border-left-color: var(--primary);
+        color: var(--primary);
         font-weight: 600;
       }
       

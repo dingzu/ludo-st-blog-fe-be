@@ -189,7 +189,7 @@ watch(() => route.query, (newQuery, oldQuery) => {
 .blog-home-container {
   display: flex;
   height: 100vh;
-  background: #f5f5f5;
+  background: var(--bg-secondary);
   overflow: hidden;
 }
 
@@ -257,7 +257,8 @@ watch(() => route.query, (newQuery, oldQuery) => {
 .content-area {
   flex: 1;
   overflow-y: auto;
-  background: white;
+  background: var(--bg-primary);
+  transition: background-color 0.3s ease;
   
   .html-content {
     padding: 40px;
@@ -288,6 +289,7 @@ watch(() => route.query, (newQuery, oldQuery) => {
     height: 100%;
   }
   
+  
   .welcome-view {
     display: flex;
     flex-direction: column;
@@ -308,11 +310,11 @@ watch(() => route.query, (newQuery, oldQuery) => {
   }
 }
 
-.sub-nav-area {
-  width: 240px;
-  background: #fafafa;
-  border-right: 1px solid #e0e0e0;
-  overflow-y: auto;
+  .sub-nav-area {
+    width: 240px;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
 }
 
 .articles-area {

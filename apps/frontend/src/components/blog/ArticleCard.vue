@@ -43,14 +43,14 @@ defineEmits<{
 
 <style scoped lang="scss">
 .article-card {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px var(--shadow);
   }
   
   .card-header {
@@ -62,7 +62,7 @@ defineEmits<{
       gap: 12px;
       margin-bottom: 12px;
       font-size: 13px;
-      color: #757575;
+      color: var(--text-secondary);
       
       .meta-divider {
         opacity: 0.5;
@@ -72,9 +72,10 @@ defineEmits<{
     .card-title {
       font-size: 28px;
       font-weight: 700;
-      color: #1e3c72;
+      color: var(--primary);
       margin: 0 0 12px 0;
       line-height: 1.3;
+      transition: color 0.3s ease;
     }
     
     .card-tags {
@@ -85,10 +86,11 @@ defineEmits<{
       .tag {
         font-size: 12px;
         padding: 4px 12px;
-        background: #e3f2fd;
-        color: #1976d2;
+        background: var(--bg-hover);
+        color: var(--primary);
         border-radius: 12px;
         font-weight: 500;
+        transition: all 0.3s ease;
       }
     }
   }
@@ -113,7 +115,7 @@ defineEmits<{
   .card-excerpt {
     padding: 16px 24px 24px;
     font-size: 16px;
-    color: #616161;
+    color: var(--text-secondary);
     line-height: 1.6;
     margin: 0;
     display: -webkit-box;

@@ -318,7 +318,7 @@ const onExpandEnter = (el: Element) => {
           // 下一帧再应用 transform，这样可以触发过渡
           requestAnimationFrame(() => {
             if (clonedCardRef.value) {
-              clonedCardRef.value.style.transform = 'translateY(30px)'
+              clonedCardRef.value.style.transform = 'translateY(30px) translateX(-50%)'
               console.log('Styles applied successfully with transition')
             }
           })
@@ -352,7 +352,7 @@ watch(expandedArticle, (newVal) => {
           // 下一帧再应用 transform，这样可以触发过渡
           requestAnimationFrame(() => {
             if (clonedCardRef.value) {
-              clonedCardRef.value.style.transform = 'translateY(30px)'
+              clonedCardRef.value.style.transform = 'translateY(30px) translateX(-50%)'
               console.log('Styles applied successfully with transition')
             }
           })
@@ -369,6 +369,8 @@ watch(expandedArticle, (newVal) => {
 .article-card-list-wrapper {
   position: relative;
   width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
   min-height: 100%;
   padding: 30px;
 }
@@ -448,13 +450,14 @@ watch(expandedArticle, (newVal) => {
 .cloned-card {
   position: absolute;
   top: 0;
-  left: var(--card-left);
-  right: 30px;
+  left: 50%;
+  transform: translateY(var(--card-top)) translateX(-50%);
+  width: calc(100% - 60px);
+  max-width: 960px;
   min-height: var(--card-height);
-  background: white;
+  background: var(--bg-primary);
   border-radius: 16px;
-  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.15);
-  transform: translateY(var(--card-top));
+  box-shadow: 0 8px 48px var(--shadow-lg);
   overflow: visible;
   
   .close-btn {
@@ -465,19 +468,19 @@ watch(expandedArticle, (newVal) => {
     height: 44px;
     border-radius: 50%;
     border: none;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--bg-overlay);
     backdrop-filter: blur(10px);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    color: #333;
+    color: var(--text-primary);
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px var(--shadow);
     
     &:hover {
-      background: white;
+      background: var(--bg-primary);
       transform: scale(1.1);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
@@ -496,11 +499,11 @@ watch(expandedArticle, (newVal) => {
       gap: 12px;
       margin-bottom: 12px;
       font-size: 13px;
-      color: #757575;
+      color: var(--text-secondary);
       
       .meta-category {
         font-weight: 600;
-        color: #42a5f5;
+        color: var(--primary);
       }
       
       .meta-divider {
@@ -511,9 +514,10 @@ watch(expandedArticle, (newVal) => {
     .article-title {
       font-size: 28px;
       font-weight: 700;
-      color: #1e3c72;
+      color: var(--primary);
       margin: 0 0 12px 0;
       line-height: 1.3;
+      transition: color 0.3s ease;
     }
     
     .article-tags {
@@ -524,10 +528,11 @@ watch(expandedArticle, (newVal) => {
       .tag {
         font-size: 12px;
         padding: 4px 12px;
-        background: #e3f2fd;
-        color: #1976d2;
+        background: var(--bg-hover);
+        color: var(--primary);
         border-radius: 12px;
         font-weight: 500;
+        transition: all 0.3s ease;
       }
     }
   }
@@ -549,7 +554,7 @@ watch(expandedArticle, (newVal) => {
     
     .article-excerpt {
       font-size: 16px;
-      color: #616161;
+      color: var(--text-secondary);
       line-height: 1.6;
       margin: 0 0 40px 0;
     }
@@ -557,7 +562,7 @@ watch(expandedArticle, (newVal) => {
     .article-content {
       font-size: 16px;
       line-height: 1.8;
-      color: #424242;
+      color: var(--text-primary);
       
       p {
         margin-bottom: 20px;
@@ -576,14 +581,14 @@ watch(expandedArticle, (newVal) => {
 }
 
 .cloned-card-enter-from {
-  transform: translateY(var(--card-top)) !important;
-  left: var(--card-left) !important;
+  transform: translateY(var(--card-top)) translateX(calc(var(--card-left) - 50%)) !important;
+  left: 50% !important;
   min-height: var(--card-height) !important;
 }
 
 .cloned-card-enter-to {
-  transform: translateY(30px) !important;
-  left: -30px !important;
+  transform: translateY(30px) translateX(-50%) !important;
+  left: 50% !important;
   min-height: calc(100vh + 30px) !important;
 }
 
@@ -592,14 +597,14 @@ watch(expandedArticle, (newVal) => {
 }
 
 .cloned-card-leave-from {
-  transform: translateY(30px) !important;
-  left: -30px !important;
+  transform: translateY(30px) translateX(-50%) !important;
+  left: 50% !important;
   min-height: calc(100vh + 30px) !important;
 }
 
 .cloned-card-leave-to {
-  transform: translateY(var(--card-top)) !important;
-  left: var(--card-left) !important;
+  transform: translateY(var(--card-top)) translateX(calc(var(--card-left) - 50%)) !important;
+  left: 50% !important;
   min-height: var(--card-height) !important;
 }
 </style>
