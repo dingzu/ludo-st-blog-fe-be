@@ -1,32 +1,39 @@
 <template>
   <div id="app">
-    <ThemeToggle />
-    <router-view />
+    <MainLayout v-if="useNewLayout" />
+    <router-view v-else />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useThemeStore } from './store/theme'
-import ThemeToggle from './components/ThemeToggle.vue'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import MainLayout from '@/components/layout/MainLayout.vue';
 
-const themeStore = useThemeStore()
+const route = useRoute();
 
-// 在组件挂载前初始化主题，避免闪烁
-themeStore.initTheme()
-
-onMounted(() => {
-  // 主题已经在上面初始化了
-})
+// 判断是否使用新布局（排除admin路由）
+const useNewLayout = computed(() => {
+  return !route.path.startsWith('/admin') && !route.path.startsWith('/post') && !route.path.startsWith('/category') && !route.path.startsWith('/tag');
+});
 </script>
 
-<style lang="scss">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 #app {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--text-primary);
-  background-color: var(--bg-secondary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  color: #2c3e50;
+}
+
+body {
+  margin: 0;
+  padding: 0;
 }
 </style>
