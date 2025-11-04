@@ -14,6 +14,7 @@ import categoryRoutes from './routes/categories.js'
 import tagRoutes from './routes/tags.js'
 import commentRoutes from './routes/comments.js'
 import uploadRoutes from './routes/upload.js'
+import navItemsRoutes from './routes/navItems.js'
 
 // 导入中间件
 import { errorHandler } from './middleware/errorHandler.js'
@@ -101,6 +102,7 @@ app.use('/api/categories', categoryRoutes)
 app.use('/api/tags', tagRoutes)
 app.use('/api/comments', commentRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/nav-items', navItemsRoutes)
 
 // 健康检查
 app.get('/health', (req, res) => {

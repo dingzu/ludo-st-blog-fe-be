@@ -4,12 +4,16 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // 加载环境变量
-  const env = loadEnv(mode, process.cwd());
+  // 加载环境变量 (从当前目录加载 .env.local 等文件)
+  const env = loadEnv(mode, __dirname);
   
   // 判断是否使用代理
   const useProxy = env.VITE_USE_PROXY === 'true';
   const apiBaseUrl = env.VITE_API_BASE_URL || 'http://localhost:3001';
+  
+  console.log('🔧 Vite 配置:');
+  console.log('  - USE_PROXY:', useProxy);
+  console.log('  - API_BASE_URL:', apiBaseUrl);
   
   return {
     plugins: [vue()],
@@ -58,5 +62,6 @@ export default defineConfig(({ mode }) => {
   define: {
     __VUE_OPTIONS_API__: true,
     __VUE_PROD_DEVTOOLS__: false
+  }
   }
 })

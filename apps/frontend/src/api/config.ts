@@ -1,14 +1,23 @@
 // API配置文件
 // 根据环境自动选择API基础URL
 const getBaseUrl = () => {
-  // 优先使用环境变量
-  if ((import.meta as any).env?.VITE_API_URL) {
-    return (import.meta as any).env.VITE_API_URL
+  const env = (import.meta as any).env
+  
+  // 如果启用代理，使用空字符串（相对路径）
+  if (env?.VITE_USE_PROXY === 'true') {
+    console.log('🔧 使用代理模式，API 请求将通过 Vite 代理转发')
+    return '' // 空字符串，让请求使用相对路径 /api/xxx
+  }
+  
+  // 如果配置了 API_BASE_URL，使用配置的地址
+  if (env?.VITE_API_BASE_URL) {
+    console.log('🌐 使用配置的 API 地址:', env.VITE_API_BASE_URL)
+    return env.VITE_API_BASE_URL.replace(/\/api$/, '') // 移除末尾的 /api
   }
   
   // 判断是否为生产环境
-  const isProduction = (import.meta as any).env?.MODE === 'production' || 
-                       (import.meta as any).env?.PROD === true ||
+  const isProduction = env?.MODE === 'production' || 
+                       env?.PROD === true ||
                        window.location.href.includes('vercel.app') ||
                        window.location.href.includes('railway.app') ||
                        window.location.href.includes('ludost.cn')
