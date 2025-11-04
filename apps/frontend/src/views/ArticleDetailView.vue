@@ -5,17 +5,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import ArticleDetail from '@/components/article/ArticleDetail.vue';
-import { getArticleById } from '@/mock/data';
+import { dataService } from '@/services/dataService';
+import type { Article } from '@/mock/data';
 
 const route = useRoute();
 
 const articleId = computed(() => route.params.articleId as string);
+const article = ref<Article | undefined>();
 
-const article = computed(() => {
-  return getArticleById(articleId.value);
+// 加载文章数据
+onMounted(async () => {
+  try {
+    article.value = await dataService.getArticleById(articleId.value);
+  } catch (error) {
+    console.error('加载文章失败:', error);
+  }
 });
 </script>
 

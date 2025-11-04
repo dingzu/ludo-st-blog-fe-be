@@ -26,16 +26,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PrimaryNav from './PrimaryNav.vue';
 import SecondaryNav from './SecondaryNav.vue';
-import { mockNavItems, type NavItem, type ArticleGroup } from '@/mock/data';
+import type { NavItem, ArticleGroup } from '@/mock/data';
+import { dataService } from '@/services/dataService';
 
 const route = useRoute();
 const router = useRouter();
 
-const navItems = ref<NavItem[]>(mockNavItems);
+const navItems = ref<NavItem[]>([]);
+
+// 加载导航数据
+onMounted(async () => {
+  try {
+    navItems.value = await dataService.getNavItems();
+  } catch (error) {
+    console.error('加载导航数据失败:', error);
+  }
+});
 const activeNavId = ref<string>('');
 const activeGroupId = ref<string>('');
 const activeArticleId = ref<string>('');

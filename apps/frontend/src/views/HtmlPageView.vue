@@ -5,22 +5,27 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import HtmlPage from '@/components/HtmlPage.vue';
-import { mockNavItems } from '@/mock/data';
+import { dataService } from '@/services/dataService';
 
 const route = useRoute();
+const htmlContent = ref<string>('');
 
-const htmlContent = computed(() => {
-  // 从路由路径中获取导航ID
-  const pathParts = route.path.split('/').filter(p => p);
-  if (pathParts.length > 0) {
-    const navPath = `/${pathParts[0]}`;
-    const nav = mockNavItems.find(n => n.path === navPath);
-    return nav?.htmlContent || '';
+// 加载 HTML 内容
+onMounted(async () => {
+  try {
+    const pathParts = route.path.split('/').filter(p => p);
+    if (pathParts.length > 0) {
+      const navPath = `/${pathParts[0]}`;
+      const navItems = await dataService.getNavItems();
+      const nav = navItems.find(n => n.path === navPath);
+      htmlContent.value = nav?.htmlContent || '';
+    }
+  } catch (error) {
+    console.error('加载页面内容失败:', error);
   }
-  return '';
 });
 </script>
 
